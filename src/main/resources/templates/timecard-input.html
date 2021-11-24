@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout/templates :: layout(~{::title},~{::body/content()})}">
+  <head>
+  <meta charset="utf-8" />
+    <title>勤怠連絡システム</title>
+  </head>
+  <body>
+  	<script th:src="@{../js/timecard-input.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <link th:href="@{../css/timecard-style.css}" rel="stylesheet">
+	<link th:href="@{../css/modal.css}" rel="stylesheet">
+	<link rel="stylesheet" th:href="@{../css/base.css}">
+	<div class="main">
+	<div id="modal-overlay"></div>
+    <form th:action="@{/timecard-input}" method="post">
+      <div th:object="${timecardInputData}">
+      <p><span th:text="${timecardInputData.userName}"></span><span>さんの勤怠情報</span></p>
+	  <select id="selectKintai">
+	    <option th:each="item : *{selectKintaiPulldownDtoList}" th:value="${item.value}" th:selected="${item.key} == ${timecardInputData.yearMonth}">[[${item.value}]]</option>
+	  </select>
+      <input class="mb20" type="button" id="selectKintaiSubmit" onclick="javascript:clickKintaiSelect();" value="年月選択">
+        <table class="mb10" style="background-color:#d8f2da;">
+          <!-- 中身 -->
+          <th:block th:each="item, stat : *{timecardInputDtoList}">
+	          <tr>
+	            <td th:text="|${item.hizuke}${item.youbi}|"></td>
+	            <td>
+	              <input type="text" size="5" style="cursor:pointer;" onclick="javascript:clickInputGozen(this.id);"
+	                th:field="*{timecardInputDtoList[__${stat.index}__].gozen}" th:data-nen="${item.nen}"
+	                th:data-day="${item.hizuke}" th:data-youbi="${item.youbi}" th:data-workdayid="${item.workDayId}" th:data-ymd="${item.ymd}"
+	                th:disabled="${timecardInputData.approvalStatusCd eq '01'}" readonly>
+	              <span>&nbsp;～</span>
+	            </td>
+	            <td>
+	              <input type="text" size="5" style="cursor:pointer;" onclick="javascript:clickInputGogo(this.id);"
+	                th:field="*{timecardInputDtoList[__${stat.index}__].gogo}"
+	                th:disabled="${timecardInputData.approvalStatusCd eq '01'}" readonly>
+	            </td>
+	          </tr>
+          </th:block>
+        </table>
+      </div>
+    </form>
+    <form id="selectKintaiForm" th:action="@{/timecard-input/init}" method="get">
+    	<input type="hidden" id="sendYearMonth" name="yearMonth">
+    	<input type="hidden" id="sendUserId" name="userId" th:value="${timecardInputData.userId}">
+    </form>
+    <th:block th:if="${#strings.isEmpty(str)}">
+    <div class="mb20" sec:authorize="hasAnyRole('ROLE_APP','ROLE_ADM')">
+        <form th:action="@{/timecard-input/approval}" method="post">
+            <button type="button" onclick="history.back()">戻る</button>
+            <input type="submit" value="承認">
+            <input type="hidden" name="userId" th:value="${timecardInputData.userId}">
+            <input type="hidden" name=yearMonth th:value="${timecardInputData.yearMonth}">
+            <script th:src="@{../js/timecard-input.js}"></script>
+        </form>
+    </div>
+  	 <div id="modal" class="modal">
+	  <div class="modal-content">
+		  <form th:action="@{/timecard-input/modal}" method="post">
+			    <div class="modal-body main">
+			      <div class="mt20 mb10"><span id="modalDisplayYear"></span><span id="modalDisplayDate"></span></div>
+			      <div class="mb10">
+			        <input type="time" id="modal_from" class="form-control margin-bottom-20"
+			          th:field="${timecardInputData.modalDateFrom}"> ～
+			        <input type="time" id="modal_to" class="form-control margin-bottom-20"
+			          th:field="${timecardInputData.modalDateTo}">
+			        <input type="hidden" id="modal_date" th:field="${timecardInputData.modalDate}">
+			        <input type="hidden" id="modal_workDayId" th:field="${timecardInputData.modalWorkDayId}">
+			        <input type="hidden" id="modal_userId" th:field="${timecardInputData.modalUserId}">
+			      </div>
+			      <div class="mb20">
+			        <input type="submit" value="更新">
+			        <input type="button" id="closeBtn" value="キャンセル" onclick="javascript:closeModai();">
+			      </div>
+			    </div>
+			</form>
+		</div>
+	</div>
+	</div>
+  </body>
+</html>

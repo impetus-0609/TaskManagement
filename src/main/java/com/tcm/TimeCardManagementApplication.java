@@ -1,13 +1,13 @@
-package com.example.demo;
+package com.tcm;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoHelloApplication {
+public class TimeCardManagementApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoHelloApplication.class, args);
+		SpringApplication.run(TimeCardManagementApplication.class, args);
 	}
 
 }

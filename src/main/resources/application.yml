@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url:  jdbc:postgresql://localhost:5432/impetus
+    url:  jdbc:postgresql://192.168.1.156:5432/impetus
     username: postgres
     password: postgres
     driverClassName: org.postgresql.Driver

@@ -1,0 +1,27 @@
+body {
+    font-family: "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro", "Yu Gothic Medium", "游ゴシック Medium", YuGothic, "游ゴシック体", "メイリオ", sans-serif;
+}
+
+form, input {
+  margin: 0;
+}
+form {
+  position: relative;
+}
+
+div.searchpanel-contents:nth-child(1){
+    margin-left: 10px;
+    float: left;
+}
+
+div.searchpanel-contents:nth-child(3){
+    margin: 10px;
+}
+
+div.searchpanel-contents:nth-child(4){
+    margin: 10px;
+}
+
+div.searchpanel-contents:nth-child(5){
+    margin: 10px;
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{layout/templates :: layout(~{::title},~{::body/content()})}">
+    <head>
+        <meta charset="UTF-8">
+        <title>勤怠連絡システム</title>
+    </head>
+    <body>
+    <link th:href="@{../css/manage.css}" rel="stylesheet">
+    <div class="main">
+    <div class="mt20 mb10">参照したい社員のユーザーIDを入力してください。</div>
+        <form th:action="@{/timecard-input/init}" method=get>
+            <div class="searchpanel">
+                <div class="searchpanel-contents">
+                    <input type="text" name="userId" placeholder="ユーザーID" />
+                </div>
+                <div class="searchpanel-contents mb20 t-align-c">
+                    <button class="mt20" type="submit">参照</button>
+                </div>
+            </div>
+        </form>
+        <th:block th:if="${searchResultList}">
+            <table border="1">
+                <tr>
+                    <th>年月</th>
+                    <th>名前</th>
+                    <th>ステータス</th>
+                </tr>
+                <tr th:each="searchResult : ${searchResultList}">
+                    <td th:text="${searchResult.yearMonthStr}"></td>
+                    <td th:text="${searchResult.userName}"></td>
+                    <td th:text="${searchResult.statusName}"></td>
+                </tr>
+            </table>
+        </th:block>
+    </div>
+    </body>
+</html>
